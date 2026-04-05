@@ -1,0 +1,7 @@
+.settings
+.venv
+.vscode
+.cproject
+*.png
+*.pdf
+*.docx

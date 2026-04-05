@@ -1,0 +1,10 @@
+<library path="arm_hardware">
+  <class name="arm_hardware/ArmHardwareInterface"
+         type="arm_hardware::ArmHardwareInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface for the V2CLAW 6-DOF arm.
+      Communicates with STM32F407 over UART (default /dev/ttyAMA0, 115200 baud).
+    </description>
+  </class>
+</library>

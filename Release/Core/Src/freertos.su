@@ -1,0 +1,3 @@
+../Core/Src/freertos.c:126:6:StartRosTask	8	static
+../Core/Src/freertos.c:148:6:StartPidTask	8	static
+../Core/Src/freertos.c:81:6:MX_FREERTOS_Init	8	static

@@ -1,0 +1,102 @@
+<!--
+  ros2_control snippet for v2claw.urdf.xacro
+  
+  This block declares the hardware plugin and all 6 joints to ros2_control.
+  Paste this INSIDE your <robot> tag in the URDF (or include it as a xacro).
+  
+  Joint names MUST match:
+    - The <joint> names in the rest of your URDF
+    - The joint names in controllers.yaml
+    - The order in JOINT_LIMITS in protocol.hpp (index 0..5)
+  
+  Joint limits MUST match protocol.hpp JOINT_LIMITS exactly.
+  If they disagree, MoveIt2 will plan to a position the firmware will clamp.
+-->
+
+<ros2_control name="arm_hardware" type="system">
+
+  <hardware>
+    <plugin>arm_hardware/ArmHardwareInterface</plugin>
+    <!-- Serial port connected to STM32 UART4 (PC10/PC11) via USB-UART or GPIO -->
+    <param name="serial_port">/dev/ttyAMA0</param>
+    <param name="baud_rate">115200</param>
+  </hardware>
+
+  <!-- ── Joint 0: M1 — shoulder rotation (potentiometer) ─────────────────── -->
+  <joint name="m1_joint">
+    <command_interface name="position">
+      <param name="min">0.827</param>   <!-- 47.4 deg in radians -->
+      <param name="max">1.292</param>   <!-- 74.0 deg in radians -->
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+
+  <!-- ── Joint 1: M2 — shoulder lift (potentiometer) ──────────────────────── -->
+  <joint name="m2_joint">
+    <command_interface name="position">
+      <param name="min">0.017</param>   <!-- 1.0 deg -->
+      <param name="max">1.068</param>   <!-- 61.2 deg -->
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+
+  <!-- ── Joint 2: M3 — elbow (AS5600, multi-turn) ──────────────────────────── -->
+  <joint name="m3_joint">
+    <command_interface name="position">
+      <param name="min">-3.14159</param>  <!-- ±180 deg — adjust to your M3_OUTPUT_LIMIT -->
+      <param name="max"> 3.14159</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+
+  <!-- ── Joint 3: Pitch — wrist pitch (AS5600, differential output) ─────────── -->
+  <joint name="pitch_joint">
+    <command_interface name="position">
+      <param name="min">-1.5708</param>  <!-- ±90 deg — adjust to your PITCH_RANGE_DEG -->
+      <param name="max"> 1.5708</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+
+  <!-- ── Joint 4: Roll — wrist roll (AS5600, differential output) ──────────── -->
+  <joint name="roll_joint">
+    <command_interface name="position">
+      <param name="min">-3.14159</param>  <!-- ±180 deg — adjust to your ROLL_RANGE_DEG -->
+      <param name="max"> 3.14159</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+
+  <!-- ── Joint 5: Z — linear axis (AS5600, multi-turn) ─────────────────────── -->
+  <joint name="z_joint">
+    <command_interface name="position">
+      <param name="min">-0.300</param>   <!-- meters — adjust to your ZA_OUTPUT_LIMIT -->
+      <param name="max"> 0.300</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+
+</ros2_control>
+
+<!--
+  MoveIt2 SRDF note on the differential wrist
+  ─────────────────────────────────────────────
+  pitch_joint and roll_joint appear as independent joints to MoveIt2.
+  The differential mixing (mA = pitch + roll, mB = -pitch + roll) happens
+  inside the STM32 firmware.  This is transparent to MoveIt2 as long as:
+    1. Your URDF kinematics model uses pitch/roll as independent joints
+       (which is correct for the OUTPUT axes, not the motor axes).
+    2. You do NOT add the two physical motors as URDF joints — only the
+       output axes (pitch, roll) appear in the kinematic chain.
+  
+  If you have a different wrist geometry where the gear ratio between
+  motor and output axis is not 1:1, apply that ratio inside the STM32
+  (which you already do via PITCH_RANGE_DEG and ROLL_RANGE_DEG) and
+  let MoveIt2 see only the output axis in degrees.
+-->

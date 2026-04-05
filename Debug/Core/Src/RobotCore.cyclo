@@ -1,0 +1,34 @@
+../Core/Inc/RobotCore.h:49:5:EMAFilter::EMAFilter(float)	1
+../Core/Inc/RobotCore.h:51:11:float EMAFilter::updateEstimate(float)	2
+../Core/Inc/RobotCore.h:57:10:void EMAFilter::setEstimate(float)	1
+../Core/Inc/RobotCore.h:99:5:PotMotor::PotMotor(TIM_HandleTypeDef*, uint32_t, GPIO_TypeDef*, uint16_t, const float*, const int*, int, bool, int, float, float, float, int)	1
+../Core/Src/RobotCore.cpp:8:9:uint8_t compute_checksum(const uint8_t*, size_t)	2
+../Core/Src/RobotCore.cpp:32:24:uint16_t adc_read_oversampled(uint8_t)	2
+../Core/Src/RobotCore.cpp:51:17:void RobotCore_USB_Receive_Callback(uint8_t*, uint32_t)	2
+../Core/Src/RobotCore.cpp:148:7:float wrapValue(float)	3
+../Core/Src/RobotCore.cpp:153:7:float wrapError(float)	3
+../Core/Src/RobotCore.cpp:158:7:float applyDeadzone(float, float)	3
+../Core/Src/RobotCore.cpp:164:7:float motorDegToSteps(float)	1
+../Core/Src/RobotCore.cpp:165:7:float outputToMotorDeg(float)	1
+../Core/Src/RobotCore.cpp:166:7:float zaOutputToMotorDeg(float)	1
+../Core/Src/RobotCore.cpp:167:7:float pitchDegToSteps(float)	3
+../Core/Src/RobotCore.cpp:174:7:float rollDegToSteps(float)	1
+../Core/Src/RobotCore.cpp:176:7:float m3OutputDegToContSteps(float)	3
+../Core/Src/RobotCore.cpp:180:7:float zaOutputDegToContSteps(float)	3
+../Core/Src/RobotCore.cpp:189:6:void DriveMotor(TIM_HandleTypeDef*, uint32_t, GPIO_TypeDef*, uint16_t, int)	7
+../Core/Src/RobotCore.cpp:198:6:void tcaSelect(uint8_t)	2
+../Core/Src/RobotCore.cpp:204:5:int readEncoderRaw(int)	2
+../Core/Src/RobotCore.cpp:213:5:int readEncoder(int)	5
+../Core/Src/RobotCore.cpp:230:6:void setLed(bool)	2
+../Core/Src/RobotCore.cpp:244:6:void PotMotor::init(int)	1
+../Core/Src/RobotCore.cpp:253:7:float PotMotor::adcToAngle(int)	12
+../Core/Src/RobotCore.cpp:273:6:void PotMotor::resetStall()	1
+../Core/Src/RobotCore.cpp:279:6:void PotMotor::updateTrajectory(float)	3
+../Core/Src/RobotCore.cpp:288:6:void PotMotor::update(float, float, int)	19
+../Core/Src/RobotCore.cpp:363:6:void RobotCore_Init()	2
+../Core/Src/RobotCore.cpp:403:6:void emergencyStopAll()	3
+../Core/Src/RobotCore.cpp:419:6:bool parseCommandPacket(uint8_t*, uint32_t, uint32_t*, uint32_t)	12
+../Core/Src/RobotCore.cpp:453:6:void RobotCore_ROSTask()	37
+../Core/Src/RobotCore.cpp:581:6:void RobotCore_PIDTask()	127
+../Core/Src/RobotCore.cpp:962:1:void __static_initialization_and_destruction_0()	1
+../Core/Src/RobotCore.cpp:962:1:cpp)	1

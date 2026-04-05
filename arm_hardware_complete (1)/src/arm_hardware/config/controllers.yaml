@@ -1,0 +1,71 @@
+# =============================================================================
+# controllers.yaml
+# ros2_control controller configuration for the V2CLAW arm.
+#
+# Load order:
+#   1. joint_state_broadcaster  — publishes /joint_states (needed by MoveIt2)
+#   2. arm_controller           — JointTrajectoryController (MoveIt2 talks here)
+#
+# Tune goal_time_tolerance and goal_joint_tolerance to your arm's performance.
+# Start loose (0.1 rad), tighten after real motion testing.
+# =============================================================================
+
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz — must match your realtime kernel capability
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - m1_joint
+      - m2_joint
+      - m3_joint
+      - pitch_joint
+      - roll_joint
+      - z_joint
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - m1_joint
+      - m2_joint
+      - m3_joint
+      - pitch_joint
+      - roll_joint
+      - z_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    # Allow JTC to start even if current position is within goal tolerance.
+    allow_partial_joints_goal: false
+
+    # Trajectory goal tolerances (tighten after tuning)
+    goal_time_tolerance: 1.0       # seconds extra after trajectory end time
+    constraints:
+      stopped_velocity_tolerance: 0.05  # rad/s — considered "stopped"
+      m1_joint:    { goal: 0.05 }  # radians
+      m2_joint:    { goal: 0.05 }
+      m3_joint:    { goal: 0.05 }
+      pitch_joint: { goal: 0.05 }
+      roll_joint:  { goal: 0.05 }
+      z_joint:     { goal: 0.05 }
+
+    # Interpolation: spline gives smooth velocity profiles
+    # Options: none | linear | spline
+    interpolation_method: spline
+
+    # How long to wait for STM32 feedback before declaring hardware failure
+    # Set to ~3× your UART frame period (20ms × 3 = 60ms)
+    state_publish_rate: 50.0       # Hz (half control rate is fine)
+    action_monitor_rate: 20.0      # Hz for goal monitoring
